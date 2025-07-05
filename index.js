@@ -19,7 +19,7 @@ const app = express();
 const saveSubscriptionRoute = require("./src/routes/saveSubscription");
 const { callSocketHandler } = require('./src/socket/callSocket');
 app.use(cors({
-  origin: "https://backend-iamplus-1.onrender.com/",
+  origin: ["http://localhost:5173","https://backend-iamplus-1.onrender.com/"],
   credentials: true
 }));
 app.use(express.json());
@@ -48,7 +48,7 @@ app.use('/api/chatRouter', conversationChatRouter);
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://backend-iamplus-1.onrender.com/",  // ✅ Your frontend Vite dev server
+    origin: ["http://localhost:5173","https://backend-iamplus-1.onrender.com/"],  // ✅ Your frontend Vite dev server
     methods: ["GET", "POST"],
     credentials: true                 // ✅ Allow credentials like cookies
   }
@@ -60,5 +60,5 @@ callSocketHandler(io);
 
 
 server.listen(5000, () => {
-  console.log('Server running on port :  5000}');
+  console.log('Server running on port 5000');
 });
