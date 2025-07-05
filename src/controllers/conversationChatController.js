@@ -24,8 +24,8 @@ module.exports.getMessage1on1 = async (req, res) => {
     console.log("messagessssssssssssssssssssssssssssssss", messages);
     res.status(200).json(messages);
   } catch (err) {
-    console.error("Send message failed now " , err);
-    res.status(500).json({ error: "Failed to send message  now " });
+    console.error("Send message failed", err);
+    res.status(500).json({ error: "Failed to send message" });
   }
 };
 
