@@ -67,5 +67,5 @@ const ConversationSchema = new mongoose.Schema({
   timestamps: true
 });
 
-const ConversationGroup = mongoose.model('Conversations', ConversationSchema);
+const ConversationGroup = mongoose.model('conversations', ConversationSchema);
 module.exports = ConversationGroup;

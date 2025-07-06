@@ -1,7 +1,7 @@
 const User = require("../models/Auth");
 const { encrypt, decrypt } = require("../utils/encryption");
 const { sendPushNotification } = require("../utils/sendPushNotification");
-const ConversationGroup = require("../models/conversarion");
+const ConversationGroup = require("../models/conversation");
 const MessageModel = require("../models/Message");
 const mongoose = require("mongoose");
 const onlineUsers = {};

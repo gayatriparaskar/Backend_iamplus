@@ -7,7 +7,7 @@ const GroupModel = require("../models/Group");
 
 // const { onlineUsers } = require("../socket/socket");
 const { onlineUsers } = require("../socket/conversationSocket");
-const ConversationGroup = require("../models/conversarion");
+const ConversationGroup = require("../models/conversation");
 
 // app.post('/groups', async (req, res) => {
 module.exports.createGroup = async (req, res) => {

@@ -9,7 +9,7 @@ const User = require("../models/Auth");
 const { onlineUsers } = require("../socket/conversationSocket");
 const { ObjectId } = require("mongoose").Types;
 const { v4: uuidv4 } = require("uuid"); // to generate unique group ID
-const ConversationGroup = require("../models/conversarion");
+const ConversationGroup = require("../models/conversation");
 const MessageModel = require("../models/Message");
 
 module.exports.getMessage1on1 = async (req, res) => {
