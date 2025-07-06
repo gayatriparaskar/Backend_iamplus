@@ -11,7 +11,7 @@ const chatRouter = express.Router();
 // chatRouter.get("/full-chat-list/:userId",getchatList);
 // chatRouter.post("/markRead/:userId/:groupId",markMessagesAsRead);
 chatRouter.post("/upload", uploadFile, (req, res) => {
-  if (!req.file) return res.status(400).json({ error: "No file uploaded yet" });
+  if (!req.file) return res.status(400).json({ error: "No file uploaded from user" });
 
   const fileUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
   res.status(200).json({ fileUrl });
