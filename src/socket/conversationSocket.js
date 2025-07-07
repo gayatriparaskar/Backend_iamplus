@@ -76,7 +76,7 @@ function socketHandler(io) {
             conversation = await ConversationGroup.findById(
               new mongoose.Types.ObjectId(conversationId)
             );
-          } else {clear
+          } else {
             
             // 1-on-1 chat (String _id)
             conversation = await ConversationGroup.findOne({
