@@ -9,116 +9,66 @@ const GroupModel = require("../models/Group");
 const { onlineUsers } = require("../socket/conversationSocket");
 const ConversationGroup = require("../models/conversation");
 
+// app.post('/groups', async (req, res) => {
 module.exports.createGroup = async (req, res) => {
   try {
-    const {
-      type = 'group',
-      appType = '',
-      appData = '',
-      name = '',
-      image = '',
-      location = '',
-      members = [],
-      admins = [],
-      lastMessage = {}
-    } = req.body;
+    const { name, members = [], admins = [], type = "group" } = req.body;
 
-    const creatorId = req.userId || admins[0]?._id || admins[0]; // fallback
+    const creatorId = req.userId || admins[0]?._id || admins[0]; // fallback if userId not available from auth middleware
     const creatorObjId = new mongoose.Types.ObjectId(creatorId);
 
-    // 🔁 Build full members array with role, name, mobile
-    const memberMap = new Map();
+    // Convert to ObjectId array if needed
+    const memberIds = members.map((m) => new mongoose.Types.ObjectId(m._id || m));
+    const adminIds = admins.map((a) => new mongoose.Types.ObjectId(a._id || a));
 
-    members.forEach((m) => {
-      const id = new mongoose.Types.ObjectId(m._id || m);
-      memberMap.set(id.toString(), {
-        _id: id,
-        name: m.name || '',
-        mobile: m.mobile || '',
-        role: m.role || 'member'
-      });
-    });
+    // Ensure creator is in members
+    if (!memberIds.some((id) => id.equals(creatorObjId))) {
+      memberIds.push(creatorObjId);
+    }
 
-    // ⬆️ Ensure all admins are in members
-    admins.forEach((a) => {
-      const id = new mongoose.Types.ObjectId(a._id || a);
-      if (!memberMap.has(id.toString())) {
-        memberMap.set(id.toString(), {
-          _id: id,
-          name: '',
-          mobile: '',
-          role: 'admin'
-        });
-      } else {
-        memberMap.get(id.toString()).role = 'admin';
+    // Ensure creator is in admins
+    if (!adminIds.some((id) => id.equals(creatorObjId))) {
+      adminIds.push(creatorObjId);
+    }
+
+    // Ensure all admins are in members
+    adminIds.forEach((adminId) => {
+      if (!memberIds.some((id) => id.equals(adminId))) {
+        memberIds.push(adminId);
       }
     });
 
-    // ⬆️ Ensure creator is included and is admin
-    if (!memberMap.has(creatorObjId.toString())) {
-      memberMap.set(creatorObjId.toString(), {
-        _id: creatorObjId,
-        name: '',
-        mobile: '',
-        role: 'admin'
-      });
-    } else {
-      memberMap.get(creatorObjId.toString()).role = 'admin';
-    }
-
-    const finalMembers = Array.from(memberMap.values());
-    const finalAdmins = finalMembers
-      .filter((m) => m.role === 'admin')
-      .map((m) => m._id);
-
-    const groupId = new mongoose.Types.ObjectId();
+    const newId = new mongoose.Types.ObjectId();
 
     const group = await ConversationGroup.create({
-      _id: groupId,
-      type,
-      appType,
-      appData,
+      _id: newId,
       name,
-      image,
-      location,
-      members: finalMembers,
-      admins: finalAdmins,
+      type,
+      members: memberIds.map((_id) => ({ _id })),
+      admins: adminIds.map((_id) => ({ _id })),
       createdBy: creatorObjId,
-      lastMessage: {
-        senderId: lastMessage.senderId || creatorObjId,
-        message: lastMessage.message || '',
-        messageType: lastMessage.messageType || 'text',
-        fileUrl: lastMessage.fileUrl || '',
-        timestamp: lastMessage.timestamp || new Date(),
-        seenBy: lastMessage.seenBy || [],
-        status: lastMessage.status || 'sent',
-        read: lastMessage.read || false
-      },
-      read: false,
       createdAt: new Date(),
-      updatedAt: new Date()
     });
 
     console.log("✅ Group Created:", group);
 
-    // 🔔 Notify all members if online
-    finalMembers.forEach((member) => {
-      const sid = onlineUsers[member._id.toString()];
+    // Notify all members (including creator)
+    memberIds.forEach((memberId) => {
+      const sid = onlineUsers[memberId.toString()];
       if (sid) {
         io.to(sid).emit("newGroupCreated", {
           success: true,
-          group
+          group,
         });
       }
     });
 
-    return res.status(201).json(successResponse("Group is created", group));
+    return res.status(200).json(successResponse("Group is created", group));
   } catch (error) {
-    console.error("❌ Group creation failed due to some reasons:", error);
+    console.error("❌ Group creation failed:", error);
     return res.status(500).json(errorResponse("Group is not created", error.message));
   }
 };
-
 
 
 // app.get('/groups/:userId', async (req, res) => {
