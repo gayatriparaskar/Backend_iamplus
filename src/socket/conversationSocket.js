@@ -32,7 +32,7 @@ function socketHandler(io) {
     // ========================
     socket.on("userOnline", async (userId) => {
       onlineUsers[userId] = socket.id;
-      await updateUserOnlineStatus(userId, "online");
+      // await updateUserOnlineStatus(userId, "online");
       console.log(`🟢 ${userId} is online`);
     });
 
@@ -315,7 +315,7 @@ function socketHandler(io) {
 
       if (disconnectedUserId) {
         delete onlineUsers[disconnectedUserId];
-        await updateUserOnlineStatus(disconnectedUserId, "offline");
+        // await updateUserOnlineStatus(disconnectedUserId, "offline");
         console.log(`❌ ${disconnectedUserId} disconnected`);
       }
     });
