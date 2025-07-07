@@ -62,6 +62,10 @@ function socketHandler(io) {
             conversationId,
             "conversationIdddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
           );
+          console.log(
+            type,
+            "typeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+          );
 
           // 1️⃣ Validate conversationId
           if (!conversationId) {
