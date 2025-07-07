@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const onlineUsers = {};
 
 // async function updateUserOnlineStatus(userId, status) {
-//   console.log(userId,"onolineeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+  
 //   await User.findByIdAndUpdate(userId, {
 //     online_status: status,
 //     ...(status === "offline" ? { last_seen: new Date() } : {}),
@@ -75,13 +75,16 @@ function socketHandler(io) {
             // Group conversation (ObjectId)
             conversation = await ConversationGroup.findById(
               new mongoose.Types.ObjectId(conversationId)
+              
             );
+              console.log(conversation, "GRUP conversationnnnnnnn");
           } else {
             
             // 1-on-1 chat (String _id)
             conversation = await ConversationGroup.findOne({
               _id: conversationId,
             });
+                  console.log(conversation, "10N1 conversationnnnnnnn");
           }
           console.log(conversation, "conversationnnnnnnn");
           if (!conversation) {
