@@ -7,10 +7,7 @@ const mongoose = require("mongoose");
 const onlineUsers = {};
 
 async function updateUserOnlineStatus(userId, status) {
-   if (!mongoose.Types.ObjectId.isValid(userId)) {
-    console.warn(`⚠️ Skipping updateUserOnlineStatus — Invalid ObjectId: ${userId}`);
-    return;
-  }
+  
   await User.findByIdAndUpdate(userId, {
     online_status: status,
     ...(status === "offline" ? { last_seen: new Date() } : {}),
@@ -35,11 +32,7 @@ function socketHandler(io) {
     // ========================
     socket.on("userOnline", async (userId) => {
       onlineUsers[userId] = socket.id;
-     if (mongoose.Types.ObjectId.isValid(userId)) {
-    await updateUserOnlineStatus(userId, "online");
-  } else {
-    console.warn(`⚠️ userOnline event received with invalid ID: ${userId}`);
-  }
+      await updateUserOnlineStatus(userId, "online");
       console.log(`🟢 ${userId} is online`);
     });
 
@@ -83,7 +76,8 @@ function socketHandler(io) {
             conversation = await ConversationGroup.findById(
               new mongoose.Types.ObjectId(conversationId)
             );
-          } else {
+          } else {clear
+            
             // 1-on-1 chat (String _id)
             conversation = await ConversationGroup.findOne({
               _id: conversationId,
