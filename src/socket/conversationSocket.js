@@ -6,13 +6,13 @@ const MessageModel = require("../models/Message");
 const mongoose = require("mongoose");
 const onlineUsers = {};
 
-async function updateUserOnlineStatus(userId, status) {
-  console.log(userId,"onolineeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
-  await User.findByIdAndUpdate(userId, {
-    online_status: status,
-    ...(status === "offline" ? { last_seen: new Date() } : {}),
-  });
-}
+// async function updateUserOnlineStatus(userId, status) {
+//   console.log(userId,"onolineeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+//   await User.findByIdAndUpdate(userId, {
+//     online_status: status,
+//     ...(status === "offline" ? { last_seen: new Date() } : {}),
+//   });
+// }
 // function generateConversationId(mobile1, mobile2) {
 //   if (!mobile1 || !mobile2) return null;
 //   const sorted = [mobile1, mobile2].sort();
@@ -32,7 +32,7 @@ function socketHandler(io) {
     // ========================
     socket.on("userOnline", async (userId) => {
       onlineUsers[userId] = socket.id;
-      await updateUserOnlineStatus(userId, "online");
+      // await updateUserOnlineStatus(userId, "online");
       console.log(`🟢 ${userId} is online`);
     });
 
@@ -315,7 +315,7 @@ function socketHandler(io) {
 
       if (disconnectedUserId) {
         delete onlineUsers[disconnectedUserId];
-        await updateUserOnlineStatus(disconnectedUserId, "offline");
+        // await updateUserOnlineStatus(disconnectedUserId, "offline");
         console.log(`❌ ${disconnectedUserId} disconnected`);
       }
     });
