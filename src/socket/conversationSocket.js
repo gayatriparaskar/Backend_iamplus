@@ -30,11 +30,12 @@ function socketHandler(io) {
     });
 
     // ========================
-    socket.on("userOnline", async (userId) => {
-      onlineUsers[userId] = socket.id;
-      await updateUserOnlineStatus(userId, "online");
-      console.log(`🟢 ${userId} is online`);
-    });
+    // socket.on("
+    // ", async (userId) => {
+    //   onlineUsers[userId] = socket.id;
+    //   await updateUserOnlineStatus(userId, "online");
+    //   console.log(`🟢 ${userId} is online`);
+    // });
 
     socket.on("join", ({ userId }) => {
       onlineUsers[userId] = socket.id;
