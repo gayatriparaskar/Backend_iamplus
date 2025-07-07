@@ -114,7 +114,7 @@ module.exports.createGroup = async (req, res) => {
 
     return res.status(201).json(successResponse("Group is created", group));
   } catch (error) {
-    console.error("❌ Group creation failed:", error);
+    console.error("❌ Group creation failed due to some reasons:", error);
     return res.status(500).json(errorResponse("Group is not created", error.message));
   }
 };
