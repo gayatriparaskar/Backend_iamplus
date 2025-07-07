@@ -6,13 +6,13 @@ const MessageModel = require("../models/Message");
 const mongoose = require("mongoose");
 const onlineUsers = {};
 
-async function updateUserOnlineStatus(userId, status) {
+// async function updateUserOnlineStatus(userId, status) {
   
-  await User.findByIdAndUpdate(userId, {
-    online_status: status,
-    ...(status === "offline" ? { last_seen: new Date() } : {}),
-  });
-}
+//   await User.findByIdAndUpdate(userId, {
+//     online_status: status,
+//     ...(status === "offline" ? { last_seen: new Date() } : {}),
+//   });
+// }
 // function generateConversationId(mobile1, mobile2) {
 //   if (!mobile1 || !mobile2) return null;
 //   const sorted = [mobile1, mobile2].sort();
