@@ -30,12 +30,11 @@ function socketHandler(io) {
     });
 
     // ========================
-    // socket.on("
-    // ", async (userId) => {
-    //   onlineUsers[userId] = socket.id;
-    //   await updateUserOnlineStatus(userId, "online");
-    //   console.log(`🟢 ${userId} is online`);
-    // });
+    socket.on("userOnline", async (userId) => {
+      onlineUsers[userId] = socket.id;
+      await updateUserOnlineStatus(userId, "online");
+      console.log(`🟢 ${userId} is online`);
+    });
 
     socket.on("join", ({ userId }) => {
       onlineUsers[userId] = socket.id;
@@ -61,10 +60,6 @@ function socketHandler(io) {
           console.log(
             conversationId,
             "conversationIdddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
-          );
-          console.log(
-            type,
-            "typeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
           );
 
           // 1️⃣ Validate conversationId
