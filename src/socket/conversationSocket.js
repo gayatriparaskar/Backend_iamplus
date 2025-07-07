@@ -59,7 +59,7 @@ function socketHandler(io) {
         try {
           console.log(
             conversationId,
-            "conversationIdddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+            "conversationIddd"
           );
 
           // 1️⃣ Validate conversationId
